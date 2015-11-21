@@ -1,7 +1,5 @@
-/**
- * 
- */
-package imageProcess;
+
+package presentation;
 
 import javax.swing.SwingUtilities;
 
