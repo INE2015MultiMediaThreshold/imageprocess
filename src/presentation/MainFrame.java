@@ -1,11 +1,20 @@
 package presentation;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 
 public class MainFrame extends JFrame {
 	
@@ -14,10 +23,19 @@ public class MainFrame extends JFrame {
 	static final int HEIGHT = 600;
 	
 	private JMenuBar mb;
-	private JPanel imageJP = new JPanel();
+	
+	private JMenu menuFile, menuImage, menuBgr, menuNeuro, menuHelp;
+	private JMenuItem openItem, saveItem, saveAsItem, quitItem, undoItem, redoItem, resizeItem, greyScaleItem,
+			whiteNoiseItem, extraLineItem, threItem, edItem, knnSettingItem, knnTrainingItem, knnTestingItem,aboutItem, manualItem;
+	
+	private ImagePanel panel;
+	private JScrollPane imageSp;
+	private BufferedImage bufImage;
+	
 	private JPanel toolJP = new JPanel();
-	private MenubarListener mbListener = new MenubarListener();
-	private ToolbarListener tbListener = new ToolbarListener();
+	
+	private JFileChooser fileChooser = new JFileChooser();
+	
 	
 	
 	public MainFrame(){
@@ -25,23 +43,32 @@ public class MainFrame extends JFrame {
 		super("Image Process");
 		this.setSize(800, 600);
 		this.setLocation(300, 50);
-		JRootPane rp = new JRootPane();
-		super.setContentPane(rp);
-		mb = new JMenuBar();
-		rp.setJMenuBar(mb);
-		rp.add(imageJP);
 		
-		JMenu menuFile = new JMenu("File");
-		JMenu menuImage = new JMenu("Image");
-		JMenu menuBgr= new JMenu("BG remove");
-		JMenu menuNeuro= new JMenu("Neuro");
-		JMenu menuHelp= new JMenu("Help");
+		mb = new JMenuBar();
+		this.setJMenuBar(mb);
+		
+		panel = new ImagePanel();
+		this.add(panel);
+		
+		
+		
+		
+		// create file chooser
+		fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File("."));
+		
+		// create menu for menu bar
+		menuFile = new JMenu("File");
+		menuImage = new JMenu("Image");
+		menuBgr= new JMenu("BG remove");
+		menuNeuro= new JMenu("Neuro");
+		menuHelp= new JMenu("Help");
 		
 		// menu item for File menu
-		JMenuItem openItem = new JMenuItem("Open");
-		JMenuItem saveItem = new JMenuItem("Save");
-		JMenuItem saveAsItem = new JMenuItem("Save as");
-		JMenuItem quitItem = new JMenuItem("Quit");
+		openItem = new JMenuItem("Open");
+		saveItem = new JMenuItem("Save");
+		saveAsItem = new JMenuItem("Save as");
+		quitItem = new JMenuItem("Quit");
 		menuFile.add(openItem);
 		menuFile.add(saveItem);
 		menuFile.add(saveAsItem);
@@ -49,12 +76,12 @@ public class MainFrame extends JFrame {
 		menuFile.add(quitItem);
 		
 		// menu item for Image menu
-		JMenuItem undoItem = new JMenuItem("Undo");
-		JMenuItem redoItem = new JMenuItem("Redo");
-		JMenuItem resizeItem = new JMenuItem("Resize");
-		JMenuItem greyScaleItem = new JMenuItem("Greyscale");
-		JMenuItem whiteNoiseItem = new JMenuItem("White noise");
-		JMenuItem extraLineItem = new JMenuItem("Extra line");
+		undoItem = new JMenuItem("Undo");
+		redoItem = new JMenuItem("Redo");
+		resizeItem = new JMenuItem("Resize");
+		greyScaleItem = new JMenuItem("Greyscale");
+		whiteNoiseItem = new JMenuItem("White noise");
+		extraLineItem = new JMenuItem("Extra line");
 		menuImage.add(undoItem);
 		menuImage.add(redoItem);
 		menuImage.add(resizeItem);
@@ -63,15 +90,15 @@ public class MainFrame extends JFrame {
 		menuImage.add(extraLineItem);
 		
 		// menu item for BG remove menu
-		JMenuItem threItem = new JMenuItem("Thresholding");
-		JMenuItem edItem = new JMenuItem("Edge detecting");
+		threItem = new JMenuItem("Thresholding");
+		edItem = new JMenuItem("Edge detecting");
 		menuBgr.add(threItem);
 		menuBgr.add(edItem);
 		
 		// menu item for Neuro menu
-		JMenuItem knnSettingItem = new JMenuItem("KNN setting");
-		JMenuItem knnTrainingItem = new JMenuItem("KNN training");
-		JMenuItem knnTestingItem = new JMenuItem("KNN testing");
+		knnSettingItem = new JMenuItem("KNN setting");
+		knnTrainingItem = new JMenuItem("KNN training");
+		knnTestingItem = new JMenuItem("KNN testing");
 		menuNeuro.add(knnSettingItem);
 		menuNeuro.add(knnTrainingItem);
 		menuNeuro.add(knnTestingItem);
@@ -89,7 +116,31 @@ public class MainFrame extends JFrame {
 		mb.add(menuNeuro);
 		mb.add(menuHelp);
 		
+		// add menuItem listener
+		openItem.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				 int result = fileChooser.showOpenDialog(null);
+				 if(result==JFileChooser.APPROVE_OPTION){
+	                    String name = fileChooser.getSelectedFile().getPath();
+	                    //System.out.println(name);
+	                  panel.setImage(name);
+	                  panel.repaint();
+	                    
+	                    
+	                    
+	             }
+				
+			}
+			
+		});
+		
+		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-	};
+	}
+	
+	
 }
