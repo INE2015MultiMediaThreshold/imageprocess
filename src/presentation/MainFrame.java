@@ -1,19 +1,17 @@
 package presentation;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 
 public class MainFrame extends JFrame {
@@ -48,7 +46,7 @@ public class MainFrame extends JFrame {
 		this.setJMenuBar(mb);
 		
 		panel = new ImagePanel();
-		this.add(panel);
+		this.add(panel,BorderLayout.CENTER);
 		
 		
 		
